@@ -9,8 +9,6 @@ def execute_parse(lxf_path, unzip_dest, csv_dest):
 
 if __name__ == '__main__':
 	
-	lxf_path = '/home/andrewyan/Desktop/tmp/bus_lf_variant_hybrid.lxf'
-	unzip_dest = '/home/andrewyan/Desktop/tmp/bus_unzip'
-	csv_dest = '/home/andrewyan/Desktop/lego_hybrid_bus.csv'
+	from local import lxf_path, unzip_dest, csv_dest
 	
 	execute_parse(lxf_path, unzip_dest, csv_dest)

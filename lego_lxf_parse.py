@@ -97,14 +97,3 @@ class ParseLegoLXF(object):
 			piece_inventory_list.append(piece)
 			
 		return piece_inventory_list
-		
-if __name__ == '__main__':
-	
-	lxf_path = '/home/andrewyan/Desktop/tmp/bus_lf_variant_hybrid.lxf'
-	extract_dest = '/home/andrewyan/Desktop/tmp/bus_unzip'
-	
-	lxf = ParseLegoLXF(lxf_path, extract_dest)	
-	pil = lxf.get_summarized_piece_count()
-	print(pil)
-	pil_length = len(pil)
-	print(pil_length)
