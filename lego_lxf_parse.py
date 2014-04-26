@@ -42,12 +42,26 @@ class ParseLegoLXF(object):
 		else:
 			root = self.parse_lxfml()
 			
+		inventory_list = []	
+			
+		brick_elements = root.findall(".//Brick")
+		for brick_element in brick_elements:
+			inventory_dict = {}
+			brick_design_id = brick_element.attrib['designID']
+			#brick_item_no = brick_element.attrib['itemNos']
+			#brick_part = brick_element.find("Part")
+			inventory_dict['brick_design_id'] = brick_design_id
+			#inventory_dict['brick_item_no'] = brick_item_no
+			inventory_list.append(inventory_dict)
+			
+		return inventory_list
 		
-
+		
 if __name__ == '__main__':
 	
 	lxf_path = '/home/andrewyan/Desktop/tmp/bus_lf_variant_hybrid.lxf'
 	extract_dest = '/home/andrewyan/Desktop/tmp/bus_unzip'
 	
 	lxf = ParseLegoLXF(lxf_path, extract_dest)
-	lxf.parse_lxfml()
+	inventory_list = lxf.create_pieces_inventory()
+	print(len(inventory_list))
