@@ -12,15 +12,37 @@ class ParseLegoLXF(object):
 		
 	def unzip_lxf(self):
 		
+		"""
+		Unzip the Lego Digitial Designer file located at lxf_pathname
+		"""
+		
 		with zipfile.ZipFile(self.lxf, 'r') as z:
 			z.extractall(self.extract)
 			
 	def parse_lxfml(self):
 		
+		"""
+		Parse the lxfml file in the unzipped lxf file
+		"""
+		
 		self.unzip_lxf()
 		lxfml_path = '%s/%s' % (self.extract, self.lxfml)
 		xml_doc = etree.parse(lxfml_path)
-		print xml_doc
+		
+		return xml_doc
+		
+	def create_pieces_inventory(self, xml_doc=None):
+		
+		"""
+		Create an inventory of pieces specified in the lxfml file
+		"""
+		
+		if xml_doc:
+			root = xml_doc
+		else:
+			root = self.parse_lxfml()
+			
+		
 
 if __name__ == '__main__':
 	
