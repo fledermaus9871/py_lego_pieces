@@ -48,20 +48,58 @@ class ParseLegoLXF(object):
 		for brick_element in brick_elements:
 			inventory_dict = {}
 			brick_design_id = brick_element.attrib['designID']
-			#brick_item_no = brick_element.attrib['itemNos']
-			#brick_part = brick_element.find("Part")
-			inventory_dict['brick_design_id'] = brick_design_id
-			#inventory_dict['brick_item_no'] = brick_item_no
-			inventory_list.append(inventory_dict)
+			try:
+				brick_item_no = brick_element.attrib['itemNos']
+			except KeyError:
+				brick_item_no = None
+			brick_tuple = (brick_design_id, brick_item_no)
+			inventory_list.append(brick_tuple)
 			
 		return inventory_list
 		
+		
+	def get_unique_piece_designs(self, piece_inventory_list=None):
+		
+		"""
+		Return a list of unique pieces used in the Lego model
+		"""
+		
+		if piece_inventory_list:
+			pil = piece_inventory_list
+		else:
+			pil = self.create_pieces_inventory()
+			
+		unique_pieces_set = set(pil)
+		unique_pieces_list = list(unique_pieces_set)
+		
+		return unique_pieces_list
+		
+		
+	def get_summarized_piece_count(self):
+		
+		piece_inventory = self.create_pieces_inventory()
+		unique_pieces = self.get_unique_piece_designs()
+		
+		piece_inventory_list = []
+		
+		for unique_piece in unique_pieces:
+			piece = {}
+			piece_count = piece_inventory.count(unique_piece)
+			design_id, item_no = unique_piece
+			piece['design_id'] = design_id
+			piece['item_no'] = item_no
+			piece['count'] = piece_count
+			piece_inventory_list.append(piece)
+			
+		return piece_inventory_list
 		
 if __name__ == '__main__':
 	
 	lxf_path = '/home/andrewyan/Desktop/tmp/bus_lf_variant_hybrid.lxf'
 	extract_dest = '/home/andrewyan/Desktop/tmp/bus_unzip'
 	
-	lxf = ParseLegoLXF(lxf_path, extract_dest)
-	inventory_list = lxf.create_pieces_inventory()
-	print(len(inventory_list))
+	lxf = ParseLegoLXF(lxf_path, extract_dest)	
+	pil = lxf.get_summarized_piece_count()
+	print(pil)
+	pil_length = len(pil)
+	print(pil_length)
