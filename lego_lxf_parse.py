@@ -77,6 +77,11 @@ class ParseLegoLXF(object):
 		
 	def get_summarized_piece_count(self):
 		
+		"""
+		Get an inventory with the counts for
+		each unique Lego piece in the model
+		"""
+		
 		piece_inventory = self.create_pieces_inventory()
 		unique_pieces = self.get_unique_piece_designs()
 		
