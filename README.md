@@ -1,4 +1,4 @@
-# Lego Degital Designer Inventory
+# PyLegoPieces
 
 ## About
 
