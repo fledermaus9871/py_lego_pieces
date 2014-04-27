@@ -6,6 +6,12 @@ class ParseLegoLXF(object):
 	
 	def __init__(self, lxf_pathname, extract_path, lxfml_name='IMAGE100.LXFML'):
 		
+		"""
+		lxf_pathname is the path to the lxf file (e.g /home/johndoe/lego_creations/bike.lxf),
+		extract_path is the path where the lxf contents should be extracted (e.g. /home/johndoe/tmp/lego/)
+		lxfml_name is the name of the xml file that is extracted from the lxf
+		"""
+		
 		self.lxf = lxf_pathname
 		self.extract = extract_path
 		self.lxfml = lxfml_name
@@ -13,7 +19,9 @@ class ParseLegoLXF(object):
 	def unzip_lxf(self):
 		
 		"""
-		Unzip the Lego Digitial Designer file located at lxf_pathname
+		Unzip the Lego Digitial Designer file located at lxf_pathname.
+		The contents are placed in the directory specifed in "extract_path"
+		when instantiating a ParseLegoLXF object.
 		"""
 		
 		with zipfile.ZipFile(self.lxf, 'r') as z:
@@ -23,6 +31,7 @@ class ParseLegoLXF(object):
 		
 		"""
 		Parse the lxfml file in the unzipped lxf file
+		using lxml.
 		"""
 		
 		self.unzip_lxf()
@@ -34,7 +43,11 @@ class ParseLegoLXF(object):
 	def create_pieces_inventory(self, xml_doc=None):
 		
 		"""
-		Create an inventory of pieces specified in the lxfml file
+		Create an inventory of pieces specified in the lxfml file.
+		Look for all lxfml elements of 'Brick' and get their designID
+		and itemNos attribute values. These values correspond to LEGO
+		design IDs and element IDs repectively. These values are then
+		placed in a tuple and appended to a list.
 		"""
 		
 		if xml_doc:
@@ -61,7 +74,7 @@ class ParseLegoLXF(object):
 	def get_unique_piece_designs(self, piece_inventory_list=None):
 		
 		"""
-		Return a list of unique pieces used in the Lego model
+		Return a list of unique pieces used in the Lego model.
 		"""
 		
 		if piece_inventory_list:
@@ -79,7 +92,10 @@ class ParseLegoLXF(object):
 		
 		"""
 		Get an inventory with the counts for
-		each unique Lego piece in the model
+		each unique Lego piece in the model by
+		using the unique pieces list and the full
+		inventory list. A dictionary with design ID,
+		item no, and count is returned.
 		"""
 		
 		piece_inventory = self.create_pieces_inventory()
